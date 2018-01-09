@@ -1,13 +1,7 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
-import java.sql.*;
 
 public class Main {
-
-
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         DBOperations dbOperations = new DBOperations();
 
@@ -22,44 +16,71 @@ public class Main {
             if (optiune >= 0 && optiune <= 5) {
                 switch (optiune) {
                     case 1: {
-
-                       dbOperations.demoDisplay();
+                        System.out.println("Lista de contacte: ");
+                        dbOperations.displayAgenda();
+                        System.out.println("");
                         break;
                     }
 
                     case 2: {
-                        Scanner scanner = new Scanner(System.in);
-        System.out.println("Dati Nume si TEL");
-        String numeCitit = scanner.nextLine();
-        String phoneCitit = scanner.nextLine();
+                        System.out.println("Numele si telefonul de adaugat -> ");
 
-        Person p = new Person(numeCitit, phoneCitit);
+                        System.out.println("Numele: ");
+                        String numeCitit = readName();
 
-                       dbOperations.demoAdd(p);
+                        System.out.println("Telefonul: ");
+                        String phoneCitit = readPhone();
+
+                        Person p = new Person(numeCitit, phoneCitit);
+                        dbOperations.addContact(p);
                         break;
                     }
 
                     case 3: {
-                        dbOperations.demoDelete();
+                        System.out.println("Sterge contactul cu numele: ");
+                        String numeCitit = readName();
+
+                        Person p = new Person(numeCitit);
+                        dbOperations.deleteContact(p);
                         break;
                     }
 
                     case 4: {
-                        dbOperations.demoEdit();
+                        System.out.println("Editeaza contactul cu numele: ");
+                        String oldName = readName();
+
+                        Person p = new Person(oldName);
+                        dbOperations.searchContact(p);
+
+                        System.out.println("Numele nou este: ");
+                        String numeNouCitit = readName();
+                        p.setName(numeNouCitit);
+
+                        System.out.println("Telefonul nou este: ");
+                        String phoneNouCitit = readPhone();
+                        p.setPhone(phoneNouCitit);
+
+                        dbOperations.editContact(p, oldName);
+
                         break;
                     }
 
                     case 5: {
-                       dbOperations.demoSearch();
+                        System.out.println("Contactul cautat:");
+                        String numeCitit = readName();
+
+                        Person p = new Person(numeCitit);
+
+                        dbOperations.searchContact(p);
+
                         break;
                     }
                 }
             } else {
-                System.out.println("Optiune invalida");
+                System.out.println("\nOptiune invalida !\n");
             }
         } while (optiune != 0);
     }
-
 
     private static void showMenu() {
         System.out.println("1> Display Agenda");
@@ -70,22 +91,18 @@ public class Main {
         System.out.println("0> Exit");
     }
 
-    private static String readName(String label) {
-
-        System.out.print(label);
+    private static String readName() {
         Scanner scan = new Scanner(System.in);
         String numeCitit = scan.nextLine();
 
         return numeCitit;
     }
 
-    private static String readPhone(String label) {
+    private static String readPhone() {
 
-        System.out.print(label);
         Scanner scan = new Scanner(System.in);
         String telefonulCitit = scan.nextLine();
 
         return telefonulCitit;
     }
-
 }

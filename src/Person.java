@@ -1,22 +1,23 @@
 public class Person {
 
-    Person (String name, String phone){
+    private int id;
+    private String name;
+    private String phone;
+
+    Person(String name, String phone) {
         this.name = name;
         this.phone = phone;
     }
 
-    Person (){
-
+    Person(String name) {
+        this.name = name;
     }
 
-    private int id;
+    Person() {
+    }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -34,8 +35,4 @@ public class Person {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
-    private String name;
-    private String phone;
-
 }
